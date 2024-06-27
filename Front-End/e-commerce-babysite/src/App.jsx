@@ -4,7 +4,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Mainshop from './Component/Mainshop'
 
 import { useBootstrapPrefix } from 'react-bootstrap/esm/ThemeProvider';
-
+// import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
  
@@ -13,7 +14,7 @@ function App() {
     <>
     <div>
         <Mainshop/>
-     
+        <Toaster/>
       </div>
     </>
   )

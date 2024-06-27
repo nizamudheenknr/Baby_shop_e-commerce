@@ -6,14 +6,14 @@ import {
   MDBRow,
   MDBCheckbox,
   MDBBtn,
-  MDBIcon,
+  
 } from "mdb-react-ui-kit";
 import { shopItem } from "../Component/Mainshop";
 import "./Loginbtn.css";
 
 
 const Login = () => {
-  const { login, use, setUse, setLogin } = useContext(shopItem);
+  const { login,setLogin, use, setUse} = useContext(shopItem);
   const inputref = useRef();
   const nav = useNavigate();
   const submitHandle = (e) => {
@@ -79,7 +79,7 @@ const Login = () => {
           <p>
               Not a member?{" "}
               <button className="Reg-btn" onClick={() => nav("/register")}>
-                Register
+                To  Register
               </button>
               </p>
 

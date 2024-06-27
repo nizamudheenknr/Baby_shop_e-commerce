@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 
@@ -15,10 +16,11 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    profileImg:{
-        type:String,
     
-     },
+    // profileImg:{
+    //     type:String,
+    
+    //  },
   
     accountCreatedDate:{
         type:Date,

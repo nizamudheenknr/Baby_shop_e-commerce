@@ -1,44 +1,46 @@
-import React, { useContext, useRef } from "react";
+import React,{ useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { shopItem } from "../Component/Mainshop";
+// import { shopItem } from "../Component/Mainshop";
 import './Register.css'
 import { MDBInput, MDBCheckbox, MDBBtn, MDBIcon } from "mdb-react-ui-kit";
+import axios from 'axios'
+import toast, { Toaster } from "react-hot-toast";
 
 const Register = () => {
-  const inputref = useRef(null);
-  const { login, setLogin } = useContext(shopItem);
+  
+  // const { login, setLogin } = useContext(shopItem);
   const nav = useNavigate();
-
-  const handleSubmit = (e) => {
+const [register,setRegister] = useState([])
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    const username = inputref.current.username.value;
-    const email = inputref.current.email.value;
-    const password = inputref.current.password.value;
-    const cpassword = inputref.current.cpassword.value;
-    if (password == cpassword) {
-      setLogin([
-        ...login,
-        {
-          username: username,
-          email: email,
-          password: password,
-          cpassword: cpassword,
-          cart: [],
-        },
-      ]);
-      nav("/login");
-    } else {
-      alert("Password doesnt match");
-    }
+     try {
+      const response = await axios.post('http://localhost:3033/api/users/register',{
+        username:register.username,
+        email:register.email,
+        password:register.password,
+
+
+
+      })
+    // toast.success(response.data.message);
+    toast.success(response.data.message)
+     setTimeout(()=>{
+         nav("/Login")
+     },1000)
+     } catch (error) {
+      // toast.error(error.response.data.message);
+      toast.error(error.response.data.message)
+     }
+    
   };
-  console.log(login);
+
   return (
     <div className="R-MIM">
       <br/><br/><br/><br/><br/><br/><br/><br/>
 
 
         
-      <form ref={inputref} onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="container">
 
           <MDBInput
@@ -47,6 +49,7 @@ const Register = () => {
             id="form3Example1"
             label="Full Name"
             name="username"
+            onChange={(e)=>setRegister({...register, username:e.target.value})}
             required
           />
           <MDBInput
@@ -55,6 +58,8 @@ const Register = () => {
             id="form3Example3"
             label="Email address"
             name="email"
+            onChange={(e)=>setRegister({...register, email:e.target.value})}
+
             required
           />
           <MDBInput
@@ -62,16 +67,9 @@ const Register = () => {
             type="password"
             label="Password"
             name="password"
+            onChange={(e)=>setRegister({...register, password:e.target.value})}
             required
           />
-          <MDBInput
-            className="mb-4"
-            type="password"
-            label="ConfirmPassword"
-            name="cpassword"
-            required
-          />
-
           <MDBCheckbox
             wrapperClass="d-flex justify-content-center mb-4"
             id="form3Example5"
@@ -79,7 +77,7 @@ const Register = () => {
             defaultChecked
           />
 
-          <MDBBtn type="submit" className="mb-4" block>
+          <MDBBtn  type="submit" className="mb-4" block>
             Sign in
           </MDBBtn>
 
@@ -107,6 +105,7 @@ const Register = () => {
           </div>
       
       </form>
+      {/* <Toaster/> */}
       </div>
      
   );

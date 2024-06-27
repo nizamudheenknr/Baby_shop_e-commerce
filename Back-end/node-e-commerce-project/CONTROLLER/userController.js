@@ -27,12 +27,8 @@ export const signup = async (req,res,next)=>{
         
         // if the user exist
 
-        if(userExistng){
-            return res.status(400).json({ message: "Email already registered"})
-        }
+        if(!userExistng){
          
-        // The password hashing
-
         const hashedpassword = await bcrypt.hash(password,15)
 
         // new user create and save it to the database
@@ -41,7 +37,7 @@ export const signup = async (req,res,next)=>{
             username,
             email,
             password:hashedpassword,
-            profileImg: req.cloudinaryImageUrl
+            // profileImg: req.cloudinaryImageUrl
         })
 
         // saving the new user
@@ -51,6 +47,10 @@ export const signup = async (req,res,next)=>{
         // user created succussfully
 
         return res.status(201).json({message:"user created succussfully",data:newUser})
+        }
+        return res.status(409).json({ message: "Email already registered"})
+        // The password hashing
+
 
 
     }catch(error){
