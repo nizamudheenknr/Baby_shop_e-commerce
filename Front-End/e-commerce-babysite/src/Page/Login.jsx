@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   MDBInput,
@@ -10,32 +10,71 @@ import {
 } from "mdb-react-ui-kit";
 import { shopItem } from "../Component/Mainshop";
 import "./Loginbtn.css";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 
 const Login = () => {
-  const { login,setLogin, use, setUse} = useContext(shopItem);
+  // const { login,setLogin, use, setUse} = useContext(shopItem);
   const inputref = useRef();
   const nav = useNavigate();
-  const submitHandle = (e) => {
-    e.preventDefault();
-    let email = inputref.current.email.value;
-    let password = inputref.current.password.value;
-    let userdata = login.find(
-      (x) => x.email == email && x.password == password
-    );
-    if(email=== 'admin@gmail.com' &&password==='123'){
-        nav('/admin');
-      }
-    else if (userdata) {
-      setUse(userdata);
-      nav("/");
-      alert("Login Succussfully");
+  const [email,setEmail]=useState([])
+  const [password,setPassword]=useState([])
+  // const submitHandle = (e) => {
+  //   e.preventDefault();
+  //   let email = inputref.current.email.value;
+  //   let password = inputref.current.password.value;
+  //   let userdata = login.find(
+  //     (x) => x.email == email && x.password == password
+  //   );
+  //   if(email=== 'admin@gmail.com' &&password==='123'){
+  //       nav('/admin');
+  //     }
+  //   else if (userdata) {
+  //     setUse(userdata);
+  //     nav("/");
+  //     alert("Login Succussfully");
       
-    } else {
-      alert(" You dont have any account,Register to Login");
-    }
+  //   } else {
+  //     alert(" You dont have any account,Register to Login");
+  //   }
     
-  };
+  // };
+
+  const loginHandle = async (e)=>{
+    e.preventDefault()
+   try {
+    const response = await axios.post("http://localhost:3033/api/users/login",{email,password})
+
+    if(response.status === 200){
+      const userCookie =response.data.token;
+      const userData = response.data.data;
+      localStorage.setItem("userToken",userCookie);
+      localStorage.setItem("userId",userData._id);
+      localStorage.setItem("user.name",response.data.data.username)
+      toast.success(response.data.message)
+      setTimeout(()=>{
+        nav("/")
+      },1000) 
+     
+    }
+
+    if(response.status === 400){
+      alert(response.data.message)
+    }
+    if(response.status===401){
+      alert(response.data.message)
+    }
+    if(response.status === 404){
+      alert(response.data.message)
+    }
+
+   } catch (error) {
+    alert(error.response.data.message)
+   }
+  }
+
+ 
 
   return (
     <div className="L-MA">
@@ -43,14 +82,15 @@ const Login = () => {
       
       <br /><br /><br /><br /><br /><br />
       
-        <form ref={inputref} onSubmit={submitHandle} > 
-        <div className="container">
+        <form ref={inputref} onSubmit={loginHandle} > 
+        <div className="container text-center w-50">
           <MDBInput
             className="mb-4"
             name="email"
             type="email"
             id="form2Example1"
             label="Email address"
+            onChange={(e)=>setEmail(e.target.value)}
           />
           <MDBInput
             className="mb-4"
@@ -58,6 +98,7 @@ const Login = () => {
             type="password"
             id="form2Example2"
             label="Password"
+            onChange={(e)=>setPassword(e.target.value)}
           />
 
           <MDBRow className="mb-4">
@@ -73,7 +114,7 @@ const Login = () => {
             </MDBCol>
           </MDBRow>
 
-          <MDBBtn type="submit" className="mb-4" block>
+          <MDBBtn type="submit" className="mb-4 w-50"  >
             Sign in
           </MDBBtn>
           <p>

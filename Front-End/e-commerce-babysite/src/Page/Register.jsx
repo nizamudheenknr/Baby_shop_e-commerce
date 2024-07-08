@@ -1,3 +1,4 @@
+
 import React,{ useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { shopItem } from "../Component/Mainshop";
@@ -26,7 +27,7 @@ const [register,setRegister] = useState([])
     toast.success(response.data.message)
      setTimeout(()=>{
          nav("/Login")
-     },1000)
+     },1000) 
      } catch (error) {
       // toast.error(error.response.data.message);
       toast.error(error.response.data.message)
@@ -41,7 +42,7 @@ const [register,setRegister] = useState([])
 
         
       <form onSubmit={handleSubmit}>
-        <div className="container">
+        <div className="container w-50 text-center">
 
           <MDBInput
             className="mb-4"
@@ -77,7 +78,7 @@ const [register,setRegister] = useState([])
             defaultChecked
           />
 
-          <MDBBtn  type="submit" className="mb-4" block>
+          <MDBBtn  type="submit" className="mb-4 w-50">
             Sign in
           </MDBBtn>
 

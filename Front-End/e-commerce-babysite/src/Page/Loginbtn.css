@@ -1,18 +1,24 @@
-.Reg-btn{
-   
-     border: 1px;
-     background-color: #f7f7f7;
-     border-radius: 60px;
-     width: 100px;
-     height: 50px;
+.Reg-btn {
+    background-color: #3FA2F6; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 32px; /* Some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Get it to display inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 50px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    height: 50px;
+  }
 
-}
 
-.Reg-btn:hover{
     
-    background-color: #40A2E3;
-    color: black;
-}
+    .Reg-btn:hover {
+        background-color: #0F67B1; /* Darker green on hover */
+      }
 
 .L-MA{
       
