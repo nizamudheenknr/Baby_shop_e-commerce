@@ -12,7 +12,7 @@ export const viewAllProduct = async (req,res,next)=>{
         res.status(400).json({message:"Products not found"})
     }
 
-    res.status(200).json({message:"Fetched product succussfully",date:product})
+    res.status(200).json({message:"Fetched product succussfully",products:product})
  }catch(error){
     return next(error)
  }

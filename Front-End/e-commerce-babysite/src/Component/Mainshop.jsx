@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import Home from '../Page/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Shope from '../Page/Shope'
@@ -13,17 +13,25 @@ import Billing from '../Page/Billing';
 
 import Login from '../Page/Login';
 import Register from '../Page/Register';
+import axios from 'axios';
 
 export const shopItem = createContext()
 
 
 const Mainshop = () => {
-   const [sitem,setSitem]=useState(babyproducts)
+   const [sitem,setSitem]=useState([])
    const [login,setLogin]=useState([])
    const [use,setUse] = useState()
    const [searched,setSearched]=useState([])
   
-
+   useEffect(()=>{
+    const fetchProduct = async ()=>{
+      const response = await axios.get('http://localhost:3033/api/userproduct/allproducts');
+      setSitem(response.data.products)
+      console.log('dfgh',response.data.products);
+    }
+    fetchProduct();
+  },[])
   return (
     <div >      
         <shopItem.Provider value={{sitem,setSitem,login,setLogin,use,setUse,searched,setSearched}}>
