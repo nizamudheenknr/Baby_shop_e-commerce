@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../Component/Navbar';
 
 import {
@@ -11,14 +11,26 @@ import {
   } from 'mdb-react-ui-kit';
 import { shopItem } from '../Component/Mainshop';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 const Shope = () => {
+  const [item, setitem] = useState([])
+
+  useEffect(()=>{
+    const fetchProduct = async ()=>{
+      const response = await axios.get('http://localhost:3033/api/userproduct/allproducts');
+      setitem(response.data.products)
+    }
+    fetchProduct();
+  },[])
+  console.log("mmp",item);
+  
   const nav=useNavigate()
     const {sitem,searched}=useContext(shopItem)
     const {type} = useParams()
     const singleP = sitem.filter((x)=>x.type==type)
-    console.log(searched);
+    // console.log(searched);
 
     // const filterData=sitem.filter((item)=>item.type==='baby trolley')
   return (<>
@@ -26,11 +38,11 @@ const Shope = () => {
     <br/><br/>
     <div style={{backgroundColor:'#FDFAFE',display:"flex",flexWrap:"wrap"}}>
      
-        {(searched[0]!==undefined?searched:type!=="shope"?singleP:sitem).map((item)=>(
+        {(searched[0]!==undefined?searched:type!=="shope"?singleP:item).map((item)=>(
              <MDBCard key={item.id} style={{marginLeft:"50px",marginTop:"30px",width:'200px',height:'450px'}}>
-      <MDBCardImage src={item.image} position='top' alt='...' />
+      <MDBCardImage src={item.productImage} position='top' alt='...' />
       <MDBCardBody>
-        <MDBCardTitle>{item.productname}</MDBCardTitle>
+        <MDBCardTitle>{item.title}</MDBCardTitle>
         <MDBCardText>
          {item.price}
         </MDBCardText>

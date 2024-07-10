@@ -1,19 +1,19 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext,  useState } from 'react'
 import Home from '../Page/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Shope from '../Page/Shope'
-import { babyproducts} from './Products'
+// import { babyproducts} from './Products'
 import Addtocart from '../Page/Addtocart';
 import Singleitem from '../Page/Singleitem';
-import Admin from '../Page/Admin';
+import Admin from './ADMIN/Admin';
 import Billing from '../Page/Billing';
-
-
+import AdminProduct from '../Component/ADMIN/AdminProduct'
 
 
 import Login from '../Page/Login';
 import Register from '../Page/Register';
-import axios from 'axios';
+// import axios from 'axios';
+
 
 export const shopItem = createContext()
 
@@ -24,14 +24,14 @@ const Mainshop = () => {
    const [use,setUse] = useState()
    const [searched,setSearched]=useState([])
   
-   useEffect(()=>{
-    const fetchProduct = async ()=>{
-      const response = await axios.get('http://localhost:3033/api/userproduct/allproducts');
-      setSitem(response.data.products)
-      console.log('dfgh',response.data.products);
-    }
-    fetchProduct();
-  },[])
+  //  useEffect(()=>{
+  //   const fetchProduct = async ()=>{
+  //     const response = await axios.get('http://localhost:3033/api/userproduct/allproducts');
+  //     setSitem(response.data.products)
+  //     console.log('dfgh',response.data.products);
+  //   }
+  //   fetchProduct();
+  // },[])
   return (
     <div >      
         <shopItem.Provider value={{sitem,setSitem,login,setLogin,use,setUse,searched,setSearched}}>
@@ -50,6 +50,7 @@ const Mainshop = () => {
        <Route path='/register' element={<Register/>} />
        <Route path='/:type/:id' element={<Singleitem/>}/>
        <Route path='/admin' element={<Admin/>}/>
+       <Route path='/adminproductadd' element={<AdminProduct/>}/>
        </Routes>      
        </BrowserRouter>    
           </shopItem.Provider>

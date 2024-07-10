@@ -9,6 +9,7 @@ import {
   MDBModalTitle,
   MDBModalBody,
   MDBModalFooter,
+  MDBInput,
 } from 'mdb-react-ui-kit';
 import {
   MDBTabs,
@@ -17,7 +18,7 @@ import {
   MDBTabsContent,
   MDBTabsPane
 } from 'mdb-react-ui-kit';
-import { shopItem } from '../Component/Mainshop';
+import { shopItem } from '../Mainshop';
 import {
   MDBCard,
   MDBCardBody,
@@ -27,9 +28,11 @@ import {
 } from 'mdb-react-ui-kit';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import { MdFormatListBulletedAdd } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 const Admin = () => {
 
+  const nav = useNavigate();
   const{login,sitem,setSitem} = useContext(shopItem)
   const [basicModal, setBasicModal] = useState(false);
   const [ItemUpdate,setItemUpdate] = useState('')
@@ -95,7 +98,7 @@ const Admin = () => {
   return (
     <div>
 
-<MDBTabs fill className='mb-3' style={{marginTop:'150px',marginLeft:'60px',backgroundColor:'#FDFAFE',display:"flex",flexWrap:"wrap"}}>
+<MDBTabs fill className='mb-3' style={{backgroundColor:'#FDFAFE',display:"flex",flexWrap:"wrap"}}>
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleFillClick('tab1')} active={fillActive === 'tab1'}>
            User
@@ -104,6 +107,17 @@ const Admin = () => {
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleFillClick('tab2')} active={fillActive === 'tab2'}>
           Products
+          
+          </MDBTabsLink>
+        </MDBTabsItem>
+        <MDBTabsItem>
+          <MDBTabsLink onClick={() => handleFillClick('tab3')} active={fillActive === 'tab3'}>
+          payment
+          </MDBTabsLink>
+        </MDBTabsItem>
+        <MDBTabsItem>
+          <MDBTabsLink onClick={() => handleFillClick('tab4 ')} active={fillActive === 'tab4'}>
+          Revanue
           </MDBTabsLink>
         </MDBTabsItem>
       </MDBTabs>
@@ -118,9 +132,11 @@ const Admin = () => {
           ))}
         </MDBTabsPane>
         <MDBTabsPane open={fillActive === 'tab2'}>
-        <h1>ADD PRODUCT :- <Button variant="primary" onClick={handleShow}>
-        Add
-      </Button></h1>
+          <div className="container">
+         <Button variant="primary"  onClick={handleShow}>
+         <MdFormatListBulletedAdd className='mx-2 '/>
+        Add Product
+      </Button></div>
         
 
         {/* ADD PRODUCTS */}
@@ -132,7 +148,7 @@ const Admin = () => {
           <Modal.Title>Add Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <label>Image URL : </label>
+          {/* <label>Image URL : </label>
           <input required name='addimg'/><br /><br/>
           <label>Title : </label>
           <input required name='addtitle'/><br /><br/>
@@ -145,7 +161,13 @@ const Admin = () => {
           <label>Quantity : </label>
           <input required name='addqunty'/><br /><br/>
           <label>Id : </label>
-          <input required name='addId'/>
+          <input required name='addId'/> */}
+           <MDBInput id="form1" type="file"  className='mb-3'/>
+           <MDBInput label="Title" id="form1" type="text" className='mb-3'/>
+           <MDBInput label="Description" id="form1" type="text" className='mb-3' />
+           <MDBInput label="Price" id="form1" type="text" className='mb-3'/>
+           <MDBInput label="Category" id="form1" type="text" className='mb-3'/>
+           <MDBInput label="Quantity" id="form1" type="text" className='mb-3'/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
