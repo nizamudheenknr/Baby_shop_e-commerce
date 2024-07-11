@@ -1,7 +1,8 @@
 
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import {
-  MDBBtn,
+  
   MDBModal,
   MDBModalDialog,
   MDBModalContent,
@@ -30,6 +31,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import AdminUserview from './AdminUserview';
 const Admin = () => {
 
   const nav = useNavigate();
@@ -40,10 +43,46 @@ const Admin = () => {
   const toggleOpen = () => setBasicModal(!basicModal);
 
   const [show, setShow] = useState(false);
-
+ 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [user,setUser]=useState([]);
+
+  const adminToken = localStorage.getItem("adminToken")
+  console.log(adminToken);
+
+
+  const adminConfig={
+    headers:{
+        'Content-Type':"application/json",
+        Authorization:adminToken,
+    }
+}
+
+  useEffect(() => {
+    if(!localStorage.getItem('adminToken')){
+      nav('/login')
+    }
+  },[]);
+
+  useEffect(()=>{
+    const userData = async ()=>{
+      const response = await axios.get('http://localhost:3033/api/admin/usersdata',adminConfig)
+      setUser(response.data.data)
+    }
+    userData()
+  },[]);
+
+  const logout = ()=>{
+    localStorage.clear()
+    nav('/')
+  }
+  console.log(user ,'fghj');
+
+
+  
+   
   const nameref = useRef('')
   const descref = useRef('')
   const priceref = useRef('')
@@ -100,12 +139,12 @@ const Admin = () => {
 
 <MDBTabs fill className='mb-3' style={{backgroundColor:'#FDFAFE',display:"flex",flexWrap:"wrap"}}>
         <MDBTabsItem>
-          <MDBTabsLink onClick={() => handleFillClick('tab1')} active={fillActive === 'tab1'}>
+          <MDBTabsLink onClick={() =>{ nav('/adminalluser')  }} active={fillActive === 'tab1' }>
            User
           </MDBTabsLink>
         </MDBTabsItem>
         <MDBTabsItem>
-          <MDBTabsLink onClick={() => handleFillClick('tab2')} active={fillActive === 'tab2'}>
+          <MDBTabsLink onClick={() =>{ nav('/adminallproduct'), handleFillClick('/adminallproduct') }} active={fillActive === 'tab2'}>
           Products
           
           </MDBTabsLink>
@@ -126,10 +165,45 @@ const Admin = () => {
             
 {/* user details */}
 
-        <MDBTabsPane open={fillActive === 'tab1'}>
-          {login.map((item)=>(
-            <p>Username : {item.username} | Email : {item.email} | Password : {item.password}</p>
+        <MDBTabsPane open={fillActive === 'tab'}>
+          
+          <div className='p-5'>
+          <MDBTable align='middle'>
+      <MDBTableHead light>      
+
+        <tr>
+          <th scope='col'>#</th>
+          <th scope='col'>Email</th>
+          <th scope='col'>Name</th>
+          <th scope='col'>Block</th>
+        </tr>
+      </MDBTableHead>
+      <MDBTableBody>
+          <>
+      {user?.map((item,index)=>(
+          <tr key={index}>
+          <th scope='row'>{index+1}</th>
+          <td>{item.email}</td>
+          <td>{item.username}</td>
+          <td>
+            {item.isDeleted? <MDBBtn color='link' size='sm'>
+              <i className='fas fa-times'></i>
+            </MDBBtn>: <MDBBtn color='link' size='sm'>
+              <i className='fas fa-check'></i>
+            </MDBBtn>}
+           
+           
+          </td>
+        </tr>
           ))}
+          </>
+        
+       <button onClick={logout}>logout</button>
+     
+       
+      </MDBTableBody>
+    </MDBTable>
+          </div>
         </MDBTabsPane>
         <MDBTabsPane open={fillActive === 'tab2'}>
           <div className="container">
@@ -148,20 +222,6 @@ const Admin = () => {
           <Modal.Title>Add Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <label>Image URL : </label>
-          <input required name='addimg'/><br /><br/>
-          <label>Title : </label>
-          <input required name='addtitle'/><br /><br/>
-          <label>Description : </label>
-          <input required name='addDesc'/><br /><br/>
-          <label>Price : </label>
-          <input required name='addprice'/><br /><br/>
-          <label>Type : </label>
-          <input required name='addtype'/><br /><br/>
-          <label>Quantity : </label>
-          <input required name='addqunty'/><br /><br/>
-          <label>Id : </label>
-          <input required name='addId'/> */}
            <MDBInput id="form1" type="file"  className='mb-3'/>
            <MDBInput label="Title" id="form1" type="text" className='mb-3'/>
            <MDBInput label="Description" id="form1" type="text" className='mb-3' />

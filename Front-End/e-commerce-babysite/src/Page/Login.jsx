@@ -22,32 +22,61 @@ const Login = () => {
   const [password,setPassword]=useState([])
   const [admin,setAdmin]=useState(false)
 
+  
+  const adminToken = localStorage.getItem("adminToken")
+  console.log("sdvvfdgfh",adminToken);
+
+  
+
+  const adminConfig={
+    headers:{
+        'Content-Type':"application/json",
+        Authorization:adminToken,
+    }
+}
+
+const userToken = localStorage.getItem("usertoken")
+console.log("dvbdfg",userToken);
+
+const userConfig={
+  headers:{
+    "Content-Type":"application/json",
+    Authorization:userToken,
+  }
+}
 
   const loginHandle = async (e)=>{
     e.preventDefault()
-    const loginUrl = admin?"http://localhost:3033/api/admin/login":"http://localhost:3033/api/users/login"
+    const loginUrl = admin?"http://localhost:3033/api/admin/login":"http://localhost:3033/api/users/login";
+    const config = admin ? adminConfig : userConfig;
   
     try{
-      const response = await axios.post(loginUrl,{email,password})
+      const response = await axios.post(loginUrl,{email,password},config)
        if(response.status === 200){
         const token = response.data.token;
         const userData = response.data.data
         console.log("dcdd",userData);
-        console.log("sfs",token);
+        // console.log("sfs",token);
         if(admin){
           localStorage.setItem("adminToken",token)
           localStorage.setItem("user.name","Admin")
+          
 
         }else{
           localStorage.setItem("userId",userData._id);
          localStorage.setItem("user.name",response.data.data.username)
+         localStorage.setItem("usertoken",token)
         }
          toast.success(response.data.message)
          setTimeout(()=>{
           if(admin){
             nav("/admin")
+            
+            
           }else{
             nav("/")
+          
+           
           }
          },1000)
 

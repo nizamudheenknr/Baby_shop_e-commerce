@@ -1,17 +1,19 @@
 import React, { createContext,  useState } from 'react'
 import Home from '../Page/Home'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, } from 'react-router-dom';
 import Shope from '../Page/Shope'
 // import { babyproducts} from './Products'
 import Addtocart from '../Page/Addtocart';
 import Singleitem from '../Page/Singleitem';
 import Admin from './ADMIN/Admin';
 import Billing from '../Page/Billing';
-import AdminProduct from '../Component/ADMIN/AdminProduct'
+
 
 
 import Login from '../Page/Login';
 import Register from '../Page/Register';
+import AdminUserview from './ADMIN/AdminUserview';
+import Adminproductview from './ADMIN/Adminproductview';
 // import axios from 'axios';
 
 
@@ -23,6 +25,8 @@ const Mainshop = () => {
    const [login,setLogin]=useState([])
    const [use,setUse] = useState()
    const [searched,setSearched]=useState([])
+
+   
   
   //  useEffect(()=>{
   //   const fetchProduct = async ()=>{
@@ -50,7 +54,10 @@ const Mainshop = () => {
        <Route path='/register' element={<Register/>} />
        <Route path='/:type/:id' element={<Singleitem/>}/>
        <Route path='/admin' element={<Admin/>}/>
-       <Route path='/adminproductadd' element={<AdminProduct/>}/>
+       <Route path='/adminalluser' element={<AdminUserview/>}/>
+       <Route path='/adminallproduct' element={<Adminproductview/>}/>
+       {/* <Route path="/admin" element={adminToken ? <Admin /> : nav('/')} /> */}
+      
        </Routes>      
        </BrowserRouter>    
           </shopItem.Provider>

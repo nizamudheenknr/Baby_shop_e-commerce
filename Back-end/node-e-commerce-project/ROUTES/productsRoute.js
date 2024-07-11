@@ -3,8 +3,10 @@ import { productCategory, viewAllProduct, viewSpecificProduct } from '../CONTROL
 import { addCart, decrementItemQuantity, incrementItemQuantity,removecart,viewcart } from '../CONTROLLER/cartController.js'
 import { addwishList, removeWishlist, viewWishList } from '../CONTROLLER/wishlistContrller.js'
 import { payment, verifyPayment } from '../CONTROLLER/userPaymentController.js'
-
+import {usertoken}from '../Middleware/userJwttoken.js'
 const route = express.Router()
+
+route.use(usertoken)
 
 route.get('/allproducts',viewAllProduct)
 route.get('/viewProducts/:id',viewSpecificProduct)
