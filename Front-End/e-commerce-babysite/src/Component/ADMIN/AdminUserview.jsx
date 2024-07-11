@@ -2,15 +2,27 @@ import axios from 'axios';
 import { MDBBtn, MDBTable, MDBTableBody, MDBTableHead } from 'mdb-react-ui-kit';
 import React, { useEffect, useState } from 'react'
 import Admin from './Admin';
+import { useNavigate } from 'react-router-dom';
 
 const AdminUserview = () => {
 
     const [user,setUser]=useState([]);
 
+    const nav = useNavigate()
+
     const adminToken = localStorage.getItem("adminToken")
     console.log(adminToken);
   
-  
+    useEffect(() => {
+        if(!localStorage.getItem('adminToken')){
+          nav('/login')
+        }
+      },[]);
+
+      const logout = ()=>{
+        localStorage.clear()
+        nav('/')
+      }
     const adminConfig={
       headers:{
           'Content-Type':"application/json",
@@ -61,11 +73,12 @@ const AdminUserview = () => {
           </>
         ))}
         
-       {/* <button onClick={logout}>logout</button> */}
+       <button onClick={logout}>logout</button>
      
        
       </MDBTableBody>
     </MDBTable>
+    
     </div>
     </div>
   )

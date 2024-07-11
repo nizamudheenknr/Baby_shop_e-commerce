@@ -18,13 +18,22 @@ const Shope = () => {
   const [item, setitem] = useState([])
 
   useEffect(()=>{
+
     const fetchProduct = async ()=>{
-      const response = await axios.get('http://localhost:3033/api/userproduct/allproducts');
-      setitem(response.data.products)
+      try {
+        const response = await axios.get('http://localhost:3033/api/userproduct/allproducts');
+        // console.log("hjcbhj",response.data);
+  
+        setitem(response.data.products)
+      } catch (error) {
+        console.log(error.response.data);
+        
+      }
+     
     }
     fetchProduct();
   },[])
-  console.log("mmp",item);
+  // console.log("mmp",item);
   
   const nav=useNavigate()
     const {sitem,searched}=useContext(shopItem)
