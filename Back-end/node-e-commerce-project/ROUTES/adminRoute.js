@@ -12,11 +12,11 @@ const route = express.Router();
 // Admin Login
 route.post('/login',adminLogin)
 
-route.use(admintoken)
 
 
 // PRODUCT CONTROLLER
 route.post('/addproduct',uploadImage,createProduct);
+route.use(admintoken)
 route.get('/viewproducts',viewAllProduct)
 route.get('/viewproducts/:id',specificProduct)
 route.get('/viewproduct/:category',viewCategory)
