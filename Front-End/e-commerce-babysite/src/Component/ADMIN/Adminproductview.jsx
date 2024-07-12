@@ -16,13 +16,12 @@ import {
   MDBModalHeader,
   MDBModalTitle,
   MDBModalBody,
-  MDBModalFooter
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Admin from './Admin';
 
-const Adminproductview = () => {
+const AdminProductView = () => {
   const [gridModal, setGridModal] = useState(false);
   const [title, setTitle] = useState('');
   const [image, setImage] = useState(null);
@@ -30,7 +29,10 @@ const Adminproductview = () => {
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState('');
   const [view, setView] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  const [refresh,setRefresh]=useState(true)
+  
   const toggleOpen = () => setGridModal(!gridModal);
 
   const adminToken = localStorage.getItem("adminToken");
@@ -44,13 +46,18 @@ const Adminproductview = () => {
 
   useEffect(() => {
     const productView = async () => {
+      setLoading(true);
       try {
         const response = await axios.get('http://localhost:3033/api/admin/viewproducts', adminConfig);
         if (response.status === 200) {
           setView(response.data.data);
+          setRefresh(refresh)
         }
       } catch (error) {
-        console.log(error.response.data);
+        toast.error("Failed to fetch products");
+        console.error(error.response.data);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -60,7 +67,6 @@ const Adminproductview = () => {
   const addHandle = async (e) => {
     e.preventDefault();
 
-    // Create form data object
     const formData = new FormData();
     formData.append('title', title);
     formData.append('price', price);
@@ -72,57 +78,59 @@ const Adminproductview = () => {
       const configProduct = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${adminToken}`,
+          Authorization: adminToken,
         }
       };
 
       const response = await axios.post("http://localhost:3033/api/admin/addproduct", formData, configProduct);
-      if (response.status === 201) {
-        toast.success(response.data.message);
-        // Optionally refresh the product list here
+      if (response.status === 200) {
         setView([...view, response.data.data]);
+        toast.success(response.data.message);
       }
     } catch (error) {
       toast.error(error.response.data.message);
     }
 
-    setGridModal(!gridModal)
+    setGridModal(false);
   };
 
   return (
     <div>
-        <Admin/>
+      <Admin />
       <MDBBtn color='tertiary' size='lg' className='mx-5 fixed' onClick={toggleOpen}>
         <MDBIcon far icon="plus-square" /> Add Product
       </MDBBtn>
 
-
-      {view.slice().reverse().map((value, index) => (
-        <div key={index} className="p-3 p-md-5">
-          <MDBCard style={{ width: '100%' }}>
-            <MDBRow className="g-0">
-              <MDBCol xs="12" md="4">
-                <MDBCardImage 
-                  src={value.productImage} 
-                  alt="..." 
-                  fluid 
-                  className="w-100 h-100" 
-                />
-              </MDBCol>
-              <MDBCol xs="12" md="8">
-                <MDBCardBody>
-                  <MDBCardTitle>Name: {value.title}</MDBCardTitle>
-                  <MDBCardText>Price: {value.price}</MDBCardText>
-                  <MDBCardText>Category: {value.category}</MDBCardText>
-                  <MDBCardText>
-                    <small className="text-muted">Description: {value.description}</small>
-                  </MDBCardText>
-                </MDBCardBody>
-              </MDBCol>
-            </MDBRow>
-          </MDBCard>
-        </div>
-      ))}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        view.slice().reverse().map((value, index) => (
+          <div key={index} className="p-3 p-md-5">
+            <MDBCard style={{ width: '100%' }}>
+              <MDBRow className="g-0">
+                <MDBCol xs="12" md="4">
+                  <MDBCardImage 
+                    src={value?.productImage} 
+                    alt="..." 
+                    fluid 
+                    className="w-100 h-100" 
+                  />
+                </MDBCol>
+                <MDBCol xs="12" md="8">
+                  <MDBCardBody>
+                    <MDBCardTitle>Name: {value?.title}</MDBCardTitle>
+                    <MDBCardText>Price: {value?.price}</MDBCardText>
+                    <MDBCardText>Category: {value?.category}</MDBCardText>
+                    <MDBCardText>
+                    Description: {value?.description}
+                    </MDBCardText>
+                  </MDBCardBody>
+                </MDBCol>
+              </MDBRow>
+            </MDBCard>
+          </div>
+        ))
+      )}
 
       <MDBModal open={gridModal} onClose={() => setGridModal(false)} tabIndex='-1'>
         <MDBModalDialog>
@@ -187,4 +195,4 @@ const Adminproductview = () => {
   );
 };
 
-export default Adminproductview;
+export default AdminProductView;
