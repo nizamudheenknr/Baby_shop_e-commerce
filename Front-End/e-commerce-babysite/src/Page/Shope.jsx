@@ -22,7 +22,7 @@ const Shope = () => {
     const fetchProduct = async ()=>{
       try {
         const response = await axios.get('http://localhost:3033/api/userproduct/allproducts');
-        // console.log("hjcbhj",response.data);
+        console.log("hjcbhj",response.data);
   
         setitem(response.data.products)
       } catch (error) {
@@ -52,10 +52,17 @@ const Shope = () => {
       <MDBCardImage src={item.productImage} position='top' alt='...' />
       <MDBCardBody>
         <MDBCardTitle>{item.title}</MDBCardTitle>
-        <MDBCardText>
-         {item.price}
-        </MDBCardText>
         <MDBBtn onClick={()=> nav(`/${item.type}/${item.id}`)} >Show</MDBBtn>
+        <MDBCardText>
+
+       Price:-  {item.price}
+        </MDBCardText>
+        <MDBCardText>
+         Category:- {item.category}
+        </MDBCardText>
+        <MDBCardText>
+        Description:- {item.description}
+        </MDBCardText>
       </MDBCardBody>
     </MDBCard>
         ))}

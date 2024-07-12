@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext,  } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
     MDBCard,
@@ -10,15 +10,38 @@ import {
     MDBRipple
   } from 'mdb-react-ui-kit';
 import { shopItem } from '../Component/Mainshop';
+// import axios from 'axios';
 
 const Singleitem = () => {
     const {sitem,use,login}=useContext(shopItem)
     let {id}=useParams()
     const nav = useNavigate()
 
-    let data = sitem.find((x)=>x.id==id)
-console.log(data);
-   console.log(login.cart)
+    const [data,setData] =useState(null)
+
+//     let data = sitem.find((x)=>x.id==id)
+// console.log(data);
+//    console.log(login.cart)
+
+     useEffect(()=>{
+      const productSingleview = async ()=>{
+        try {
+          const response = await axios.get("http://localhost:3033/api/userproduct/viewProducts/:id")
+          console.log("product single",response);
+          if(response.status === 200){
+            alert(response.data.message)
+            setData(response.data)
+          }
+        } catch (error) {
+          console.error(error.response.data.message);
+        }
+      }
+      productSingleview()
+     }[id])
+
+
+
+     
     const addtobag=(data)=>{
       if(use){
         let carteddata=use.cart.find((items)=>items.id==data.id)

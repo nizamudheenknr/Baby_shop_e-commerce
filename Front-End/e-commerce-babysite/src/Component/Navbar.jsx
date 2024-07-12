@@ -71,7 +71,7 @@ const Navbar = () => {
       <div>
         <MDBNavbar expand="lg" light bgColor="light " fixed="top">
           <MDBContainer fluid>
-            <MDBNavbarBrand>𝓑𝓪𝓑𝔂 𝓬𝓪𝓻𝓮</MDBNavbarBrand>
+            <MDBNavbarBrand>Baby Care</MDBNavbarBrand>
             <MDBNavbarToggler
               type="button"
               data-target="#navbarTogglerDemo02"
@@ -102,7 +102,7 @@ const Navbar = () => {
                       role="button"
                       onClick={() => nav("/shope")}
                     >
-                      SHOPE
+                      SHOP
                     </MDBDropdownToggle>
                     <MDBDropdownMenu>
                       <MDBDropdownItem link onClick={() => nav("/shope")}>

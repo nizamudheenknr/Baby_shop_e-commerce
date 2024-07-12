@@ -127,15 +127,15 @@ const Admin = () => {
         </MDBTabsItem>
         <MDBTabsItem>
           <MDBTabsLink onClick={() =>'hh'}>
-          payment
+          Order
           </MDBTabsLink>
         </MDBTabsItem>
-        <MDBTabsItem>
-          <MDBTabsLink onClick={() => 'g'}>
+        <MDBTabsItem> 
+           <MDBTabsLink onClick={() => 'g'}>
           Revanue
           </MDBTabsLink>
         </MDBTabsItem>
-      </MDBTabs>
+      </MDBTabs> 
 
     
             
