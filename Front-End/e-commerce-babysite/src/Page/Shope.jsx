@@ -20,6 +20,7 @@ const Shope = () => {
   useEffect(()=>{
 
     const fetchProduct = async ()=>{
+      
       try {
         const response = await axios.get('http://localhost:3033/api/userproduct/allproducts');
         console.log("hjcbhj",response.data);
@@ -52,7 +53,7 @@ const Shope = () => {
       <MDBCardImage src={item.productImage} position='top' alt='...' />
       <MDBCardBody>
         <MDBCardTitle>{item.title}</MDBCardTitle>
-        <MDBBtn onClick={()=> nav(`/${item.type}/${item.id}`)} >Show</MDBBtn>
+        <MDBBtn onClick={() => nav(`/product/${item._id}`)} >Show</MDBBtn>
         <MDBCardText>
 
        Price:-  {item.price}

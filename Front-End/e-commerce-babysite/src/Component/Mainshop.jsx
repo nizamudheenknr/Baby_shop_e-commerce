@@ -52,7 +52,7 @@ const Mainshop = () => {
        <Route path='/addtocart' element={<Addtocart/>}/>   
        <Route path='/login' element={< Login />}/>
        <Route path='/register' element={<Register/>} />
-       <Route path='/:type/:id' element={<Singleitem/>}/>
+       <Route path='/product/:id' element={<Singleitem/>}/>
        <Route path='/admin' element={<Admin/>}/>
        <Route path='/adminalluser' element={<AdminUserview/>}/>
        <Route path='/adminallproduct' element={<Adminproductview/>}/>
