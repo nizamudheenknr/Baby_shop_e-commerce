@@ -18,7 +18,7 @@ const Singleitem = () => {
 
     const [data,setData] =useState([])
     const [isHovered, setIsHovered] = useState(false);
-    const [loading, setLoading] = useState(false);
+    
 
 //     let data = sitem.find((x)=>x.id==id)
 // console.log(data);
@@ -26,7 +26,7 @@ const Singleitem = () => {
 
      useEffect(()=>{
       const productSingleview = async (id)=>{
-        setLoading(true);
+
         try {
           const response = await axios.get(`http://localhost:3033/api/userproduct/viewProducts/${id}`)
           console.log(response.data,'ertyu');
@@ -37,9 +37,8 @@ const Singleitem = () => {
           }
         } catch (error) {
           console.error(error.response.data.message);
-        } finally {
-          setLoading(false);
-        }
+        } 
+        
       }
       productSingleview(id)
      },[id])
@@ -80,7 +79,7 @@ const Singleitem = () => {
          {data?.description}
         </MDBCardText>
    
-        <MDBBtn style={{marginLeft:'5px'}}>Buy now</MDBBtn>
+        <MDBBtn style={{marginLeft:'5px'}} >Buy now</MDBBtn>
         <MDBBtn style={{marginLeft:'30px'}} >Add Cart</MDBBtn>
 
       </MDBCardBody>
