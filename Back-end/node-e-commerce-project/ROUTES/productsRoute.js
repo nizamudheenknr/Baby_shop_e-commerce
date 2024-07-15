@@ -13,12 +13,11 @@ route.get('/categoryProduct/:category',productCategory)
 
 
 
-route.use(usertoken)
-
 // cart routes
 
 route.post("/:userid/cart/:productid",addCart)
 route.get('/cart/:userid',viewcart)
+route.use(usertoken)
 route.delete('/:userid/cart/:productid/remove',removecart)
 route.post('/:userid/cart/:productid/increment',incrementItemQuantity);
 route.post('/:userid/cart/:productid/decrement',decrementItemQuantity)
