@@ -79,18 +79,18 @@ const Addtocart = () => {
       }
      }
 
-      //  const handleRemove = async (productId)=>{
-      //       try {
-      //          const response = await axios.delete(`http://localhost:3033/api/userproduct/${userId}/cart/${productId}/remove`,userConfig)
-      //          console.log("deleteresp0nse",response);
-      //          setRemove(!remove)
-      //          toast.success(response.data.message)
+       const handleRemove = async (productId)=>{
+            try {
+               const response = await axios.delete(`http://localhost:3033/api/userproduct/${userId}/cart/${productId}/remove`,userConfig)
+               console.log("deleteresp0nse",response);
+               setRemove(!remove)
+               toast.success(response.data.message)
 
-      //          console.log();
-      //       } catch (error) {
-      //         console.error(error.response.data.message);
-      //       }
-      //  }
+               console.log();
+            } catch (error) {
+              console.error(error.response.data.message);
+            }
+       }
 
   const buttonStyle = {
     margin: '0 5px',
