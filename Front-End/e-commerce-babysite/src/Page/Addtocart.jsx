@@ -68,16 +68,16 @@ const Addtocart = () => {
      }
        
      
-    //  const handleDecrement=async(id)=>{
-    //   try {
-    //     var ItemQuantity = 1
-    //      const response = await axios.post(`http://localhost:3033/api/userproduct/${userId}/cart/${id}/decrement`,{ItemQuantity},userConfig)
-    //      console.log(response,"decremented");
-    //      setabc(!abc)
-    //   } catch (error) {
-    //     console.error(error.response.data.message);
-    //   }
-    //  }
+     const handleDecrement=async(id)=>{
+      try {
+        var ItemQuantity = 1
+         const response = await axios.post(`http://localhost:3033/api/userproduct/${userId}/cart/${id}/decrement`,{ItemQuantity},userConfig)
+         console.log(response,"decremented");
+         setabc(!abc)
+      } catch (error) {
+        console.error(error.response.data.message);
+      }
+     }
 
       //  const handleRemove = async (productId)=>{
       //       try {
