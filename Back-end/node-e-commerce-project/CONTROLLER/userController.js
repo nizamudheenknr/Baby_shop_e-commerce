@@ -1,9 +1,11 @@
 import userjoi from "../VALIDATION/userValidation.js";
 import User from "../MODELS/userSchema.js";
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
 
 
+dotenv.config() 
 
 export const signup = async (req,res,next)=>{
     try{
@@ -67,7 +69,8 @@ export const signup = async (req,res,next)=>{
 export const login = async (req,res,next)=>{
     try{
         const {email,password}=req.body;
-
+          
+        console.log("sdvf",req.body);
         // Using findOne for to get a single user document
         
         const validUser = await User.findOne({email})
@@ -88,11 +91,17 @@ export const login = async (req,res,next)=>{
         if(!isValid){
           return res.status(401).json({message:"Entered password is incorrect"})
         }
-
+             
+        console.log("validuser",process.env.USER_JWT_SECRET_CODE);
         // JWT setting
           
         const token = jwt.sign({id:validUser._id},process.env.USER_JWT_SECRET_CODE)
+        // const token = jwt.sign({id: validUser._id,email:email},process.env.USER_JWT_SECRET_CODE)
+        console.log(token);
          const {password:hashedpassword,...rest} = validUser._doc;
+
+        
+
 
         //  setting cookie
           

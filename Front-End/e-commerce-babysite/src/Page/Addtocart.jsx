@@ -1,4 +1,4 @@
-import React, { useContext,useEffect,useState } from 'react'
+import React, { useEffect,useState } from 'react'
 import {
   MDBCard,
   MDBCardTitle,
@@ -11,6 +11,8 @@ import {
 // import { shopItem } from '../Component/Mainshop';
 import axios from 'axios';
 import Navbar from '../Component/Navbar';
+import toast from 'react-hot-toast';
+
 // import { useParams } from 'react-router-dom';
 const Addtocart = () => {
  
@@ -18,22 +20,25 @@ const Addtocart = () => {
 
     const [item, setItem] = useState([]);
     // const {userId} = useParams()
-  
+    const [abc , setabc] =useState(false)
+    const [remove,setRemove]= useState(false)
     let userId = localStorage.getItem("userId");
+    const ItemQuantity = 1
 
     
   
-  const userToken = localStorage.getItem("usertoken");
+    const token = localStorage.getItem('usertoken');
   const userConfig = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: userToken,
+      Authorization: token,
     },
   };
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:3033/api/userproduct/cart/${userId}`,{},userConfig);
+              console.log(userConfig);
+                const response = await axios.get(`http://localhost:3033/api/userproduct/cart/${userId}`,userConfig);
                 console.log("gvgv",response);
                 setItem(response.data);
                 
@@ -43,17 +48,62 @@ const Addtocart = () => {
         };
         fetchProduct(userId);
       
-    }, [userId]);
+    }, [userId , abc,remove]);
 
     setTimeout(()=>{
       console.log("products",item);
      },5000)
 
-    //  const handleIncrement = async (productid,userid)=>{
-    //   await axios.post(`http://localhost:3033/api/userproduct/${userid}/cart/${productid}/increment`)
-    //  }
+     const handleIncrement = async (id)=>{
+
+      try {
   
-  return (<>
+        const response =  await axios.post(`http://localhost:3033/api/userproduct/${userId}/cart/${id}/increment`,{ItemQuantity},userConfig)
+        console.log("dcsdfvfvw",response.data);
+        setabc(!abc)
+      } catch (error) {
+        console.error(error.response.data.message); 
+      }
+    
+     }
+       
+     
+    //  const handleDecrement=async(id)=>{
+    //   try {
+    //     var ItemQuantity = 1
+    //      const response = await axios.post(`http://localhost:3033/api/userproduct/${userId}/cart/${id}/decrement`,{ItemQuantity},userConfig)
+    //      console.log(response,"decremented");
+    //      setabc(!abc)
+    //   } catch (error) {
+    //     console.error(error.response.data.message);
+    //   }
+    //  }
+
+      //  const handleRemove = async (productId)=>{
+      //       try {
+      //          const response = await axios.delete(`http://localhost:3033/api/userproduct/${userId}/cart/${productId}/remove`,userConfig)
+      //          console.log("deleteresp0nse",response);
+      //          setRemove(!remove)
+      //          toast.success(response.data.message)
+
+      //          console.log();
+      //       } catch (error) {
+      //         console.error(error.response.data.message);
+      //       }
+      //  }
+
+  const buttonStyle = {
+    margin: '0 5px',
+    padding: '5px 10px',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '3px',
+    cursor: 'pointer'
+  };
+  return (
+  
+  <>
       <Navbar/>
        
     <div style={{marginTop:'70px',display:"flex",flexWrap:"wrap"}}> {item?.map((x,index)=>(
@@ -70,17 +120,17 @@ const Addtocart = () => {
                 {x?.productId?.title}
                </MDBCardText>
                <MDBCardText>
-               {x?.productId?.price}
+               {x?.productId?.price*ItemQuantity}
                </MDBCardText>
                <MDBCardText>
                {x?.productId?.description}
                </MDBCardText>
                <MDBCardText>
                  
-{/* 
-                 <p>Quantity: <button onClick={()=>handleIncrement(x.productId._id) }>+</button>{x.quantity}<button onClick={()=>Decrement(x.id)}>-</button></p>
 
-                 <button onClick={()=>remove(x.id)}>REMOVE</button> */}
+                 <p>Quantity: <button onClick={()=>handleIncrement(x?.productId._id)} style={buttonStyle} >+</button>{x?.quantity}<button onClick={()=>handleDecrement(x?.productId._id)}style={buttonStyle} >-</button></p>
+
+                 <button onClick={()=>handleRemove(x?.productId._id)} style={buttonStyle}>REMOVE</button>
 
                </MDBCardText>
              </MDBCardBody>

@@ -2,6 +2,7 @@ import cart from "../MODELS/cartSchema.js"
 import Product from "../MODELS/productSchema.js";
 import User from "../MODELS/userSchema.js";
 
+
 // add cart
 export const addCart = async(req,res,next)=>{
     try{
@@ -102,7 +103,8 @@ export const incrementItemQuantity=async(req,res,next)=>{
         const userid=req.params.userid;
         const productid= req.params.productid;
         const {ItemQuantity} = req.body
-
+        
+        console.log(ItemQuantity);
         const user =await User.findById(userid)
         if(!user){
             res.status(404).json({message:"User not found"})
@@ -113,9 +115,9 @@ export const incrementItemQuantity=async(req,res,next)=>{
         }
         const Item = await cart.findOne({userId:userid,productId:productid})
         if(Item){
-            Item.quantity += ItemQuantity
+            Item.quantity ++;
             await Item.save()
-            return res.status(200).json({message:"Quantity Incremented"})
+            return res.status(200).json({message:"Quantity Incremented" }) 
         }else{
             return res.status(400).json({message:"Product not found in the cart"})
         }
@@ -143,8 +145,8 @@ export const decrementItemQuantity = async(req,res,next)=>{
             return res.status(404).json({message:"product not found"})
         }
         const Item= await cart.findOne({userId:user._id, productId:product._id})
-        if(Item){
-            Item.quantity -= ItemQuantity;
+        if(Item.quantity>1){
+            Item.quantity --;
             await Item.save()
             return res.status(200).json({message:"Quantity decremented"})
         }else{
