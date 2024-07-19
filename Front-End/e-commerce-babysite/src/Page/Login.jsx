@@ -45,6 +45,8 @@ const userConfig={
   }
 }
 
+
+
   const loginHandle = async (e)=>{
     e.preventDefault()
     const loginUrl = admin?"http://localhost:3033/api/admin/login":"http://localhost:3033/api/users/login";
@@ -59,7 +61,7 @@ const userConfig={
         // console.log("sfs",token);
         if(admin){
           localStorage.setItem("adminToken",token)
-          localStorage.setItem("user.name","Admin")
+          localStorage.setItem("name","Admin")
           
 
         }else{
@@ -70,7 +72,7 @@ const userConfig={
          toast.success(response.data.message)
          setTimeout(()=>{
           if(admin){
-            nav("/admin")
+            nav("/adminalluser")
             
             
           }else{

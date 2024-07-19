@@ -46,7 +46,7 @@ console.log(use)
          <h1 className='L-MOffer'>  🎀  𝐿𝒾𝓂𝒾𝓉𝓉𝑒𝒹 🌸𝒻𝒻𝑒𝓇  🎀   </h1>
          <div className='jelly-poster'>
          <img className='imgto-1' onClick={()=>nav('/baby stroller')}  src='https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/170445747092637.webp'/>
-         <img className='imgto-2'  onClick={() => nav("/dress")} src='https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/170445752492639.webp'/>
+         <img className='imgto-2'  onClick={() => nav('/dress')} src='https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/170445752492639.webp'/>
          <img className='imgto-3' onClick={()=> nav('/baby care')} src="https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/170445765092638.webp" alt="" />
          <img className='imgto-4' onClick={()=>nav('/toys')}  src='https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/170445769792625.webp'/>
          {/* <img style={{width:'250px'}} src='https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/170445759092641.webp'/>

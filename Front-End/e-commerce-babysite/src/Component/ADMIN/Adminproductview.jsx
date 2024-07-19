@@ -20,6 +20,7 @@ import {
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Admin from './Admin';
+import { useNavigate } from 'react-router-dom';
 
 const AdminProductView = () => {
   const [gridModal, setGridModal] = useState(false);
@@ -30,18 +31,22 @@ const AdminProductView = () => {
   const [description, setDescription] = useState('');
   const [view, setView] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); // Current page of products
+  const [perPage] = useState(5); // Products per page
+  const [totalPages, setTotalPages] = useState(0); // Total number of pages
 
-  const [refresh,setRefresh]=useState(true)
-  
-  const toggleOpen = () => setGridModal(!gridModal);
+  const adminToken = localStorage.getItem('adminToken');
 
-  const adminToken = localStorage.getItem("adminToken");
-
+  const nav=useNavigate()
   const adminConfig = {
     headers: {
       'Content-Type': 'application/json',
       Authorization: adminToken,
-    }
+    },
+    params: {
+      page: currentPage,
+      limit: perPage,
+    },
   };
 
   useEffect(() => {
@@ -51,10 +56,10 @@ const AdminProductView = () => {
         const response = await axios.get('http://localhost:3033/api/admin/viewproducts', adminConfig);
         if (response.status === 200) {
           setView(response.data.data);
-          setRefresh(refresh)
+          setTotalPages(Math.ceil(response.data.total / perPage));
         }
       } catch (error) {
-        toast.error("Failed to fetch products");
+        toast.error('Failed to fetch products');
         console.error(error.response.data);
       } finally {
         setLoading(false);
@@ -62,7 +67,9 @@ const AdminProductView = () => {
     };
 
     productView();
-  }, []);
+  }, [currentPage]); // Trigger on currentPage change
+
+  const toggleOpen = () => setGridModal(!gridModal);
 
   const addHandle = async (e) => {
     e.preventDefault();
@@ -79,10 +86,10 @@ const AdminProductView = () => {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: adminToken,
-        }
+        },
       };
 
-      const response = await axios.post("http://localhost:3033/api/admin/addproduct", formData, configProduct);
+      const response = await axios.post('http://localhost:3033/api/admin/addproduct', formData, configProduct);
       if (response.status === 200) {
         setView([...view, response.data.data]);
         toast.success(response.data.message);
@@ -94,97 +101,140 @@ const AdminProductView = () => {
     setGridModal(false);
   };
 
+  const handlePagination = (action) => {
+    if (action === 'prev') {
+      setCurrentPage((prevPage) => prevPage - 1);
+    } else if (action === 'next') {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+   
+  //  const updateProduct = async()=>{
+  //    try {
+  //         const response = await axios.patch('http://localhost:3033/api/admin/updateproduct/${id}')
+  //         if(response.status === 200){
+  //           toast.success(response.data.message)
+  //         }
+  //    } catch (error) {
+  //     console.log(error.response.data.message);
+  //    }
+  //  }
+
   return (
-    <div>
+    <>
       <Admin />
-      <MDBBtn color='tertiary' size='lg' className='mx-5 fixed' onClick={toggleOpen}>
-        <MDBIcon far icon="plus-square" /> Add Product
-      </MDBBtn>
+      
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <MDBBtn color='tertiary' size='lg' className='mx-5 fixed' onClick={toggleOpen}>
+    <MDBIcon far icon='plus-square' style={{ marginRight: '10px' }} /> Add Product
+    <MDBIcon far icon='plus-square' style={{ marginLeft: '10px' }} /> updateProduct
+  </MDBBtn>
 
       {loading ? (
         <div>Loading...</div>
       ) : (
-        view.slice().reverse().map((value, index) => (
-          <div key={index} className="p-3 p-md-5">
+        view.map((value, index) => (
+          <div key={index} className='p-3 p-md-5'>
             <MDBCard style={{ width: '100%' }}>
-              <MDBRow className="g-0">
-                <MDBCol xs="12" md="4">
-                  <MDBCardImage 
-                    src={value?.productImage} 
-                    alt="..." 
-                    fluid 
-                    className="w-100 h-100" 
-                  />
+              <MDBRow className='g-0'>
+                <MDBCol xs='12' md='4'>
+                  <MDBCardImage src={value?.productImage} alt='...' fluid className='w-100 h-100' />
                 </MDBCol>
-                <MDBCol xs="12" md="8">
+                <MDBCol xs='12' md='8'>
                   <MDBCardBody>
                     <MDBCardTitle>Name: {value?.title}</MDBCardTitle>
                     <MDBCardText>Price: {value?.price}</MDBCardText>
                     <MDBCardText>Category: {value?.category}</MDBCardText>
-                    <MDBCardText>
-                    Description: {value?.description}
-                    </MDBCardText>
+                    <MDBCardText>Description: {value?.description}</MDBCardText>
+                    <MDBBtn
+          color='primary'
+          size='sm'
+          className='mx-1'
+          onClick={()=>nav('/adminproUpdate')}
+        >
+        Update Product
+        </MDBBtn>
+                    {/* <MDBBtn color='primary' onClick={()=>nav('/') }>Show</MDBBtn> */}
                   </MDBCardBody>
                 </MDBCol>
               </MDBRow>
             </MDBCard>
           </div>
-        ))
+        )).slice((currentPage - 1) * perPage, currentPage * perPage) // Slice to show only the current page's products
       )}
 
+      {/* Pagination Controls */}
+      <div className='mt-4 d-flex justify-content-center'>
+        <MDBBtn
+          color='primary'
+          size='sm'
+          className='mx-1'
+          onClick={() => handlePagination('prev')}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </MDBBtn>
+        <MDBBtn
+          color='primary'
+          size='sm'
+          className='mx-1'
+          onClick={() => handlePagination('next')}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </MDBBtn>
+      </div>
+
+      {/* Modal for adding product */}
       <MDBModal open={gridModal} onClose={() => setGridModal(false)} tabIndex='-1'>
         <MDBModalDialog>
           <MDBModalContent>
             <MDBModalHeader>
               <MDBModalTitle>Add new Product</MDBModalTitle>
+             
+              
               <MDBBtn type='button' className='btn-close' color='none' onClick={() => setGridModal(false)}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
               <form onSubmit={addHandle}>
-                <MDBInput 
-                  onChange={(e) => setTitle(e.target.value)} 
-                  label="Name" 
-                  className='mb-3' 
-                  id="formControlLg" 
-                  type="text" 
-                  size="lg" 
-                  required 
+                <MDBInput
+                  onChange={(e) => setTitle(e.target.value)}
+                  label='Name'
+                  className='mb-3'
+                  id='formControlLg'
+                  type='text'
+                  size='lg'
+                  required
                 />
-                <MDBInput 
-                  onChange={(e) => setPrice(e.target.value)} 
-                  label="Price" 
-                  className='mb-3' 
-                  id="formControlLg" 
-                  type="number" 
-                  size="lg" 
-                  required 
+                <MDBInput
+                  onChange={(e) => setPrice(e.target.value)}
+                  label='Price'
+                  className='mb-3'
+                  id='formControlLg'
+                  type='number'
+                  size='lg'
+                  required
                 />
-                <MDBInput 
-                  onChange={(e) => setDescription(e.target.value)} 
-                  label="Description" 
-                  className='mb-3' 
-                  id="formControlLg" 
-                  type="text" 
-                  size="lg" 
-                  required 
+                <MDBInput
+                  onChange={(e) => setDescription(e.target.value)}
+                  label='Description'
+                  className='mb-3'
+                  id='formControlLg'
+                  type='text'
+                  size='lg'
+                  required
                 />
-                <MDBInput 
-                  onChange={(e) => setCategory(e.target.value)} 
-                  label="Category" 
-                  className='mb-3' 
-                  id="formControlLg" 
-                  type="text" 
-                  size="lg" 
-                  required 
+                <MDBInput
+                  onChange={(e) => setCategory(e.target.value)}
+                  label='Category'
+                  className='mb-3'
+                  id='formControlLg'
+                  type='text'
+                  size='lg'
+                  required
                 />
-                <MDBInput 
-                  onChange={(e) => setImage(e.target.files[0])} 
-                  className='mb-3' 
-                  id="formControlLg" 
-                  type="file" 
-                  size="lg" 
-                  required 
-                />
+                <MDBInput onChange={(e) => setImage(e.target.files[0])} className='mb-3' id='formControlLg' type='file' size='lg' required />
                 <MDBBtn type='submit'>ADD</MDBBtn>
               </form>
             </MDBModalBody>
@@ -192,6 +242,7 @@ const AdminProductView = () => {
         </MDBModalDialog>
       </MDBModal>
     </div>
+    </>
   );
 };
 
