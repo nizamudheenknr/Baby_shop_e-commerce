@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, {  useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   MDBCard,
   MDBCardBody,

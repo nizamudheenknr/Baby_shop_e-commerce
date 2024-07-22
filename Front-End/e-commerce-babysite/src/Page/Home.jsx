@@ -52,12 +52,13 @@ console.log(use)
          {/* <img style={{width:'250px'}} src='https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/170445759092641.webp'/>
          <img style={{width:'250px'}} src='https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/170445767292626.webp' /> */}
          </div>
-        <div>
-      <img className='LA-Im'  src="https://juniorshop.in/wp-content/uploads/2022/04/banner_1.jpg" alt="" />
-
-      </div>
+        
       <div>
         <img className='B-F-L' src='https://breeze-media.vega.co.in/media/catalog/category/Feeding_bottle.jpg.webp'/>
+      </div>
+      <div>
+      <img className='LA-Im'  src="https://juniorshop.in/wp-content/uploads/2022/04/banner_1.jpg" alt="" />
+
       </div>
       <div>
         <img className='Explo' src='https://cdn.fcglcdn.com/brainbees/images/cattemplate/750_103_default_toys_040923_11.jpg'/>

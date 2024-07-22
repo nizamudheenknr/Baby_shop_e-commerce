@@ -49,11 +49,11 @@ const Shope = () => {
     <div style={{backgroundColor:'#FDFAFE',display:"flex",flexWrap:"wrap"}}>
      
         {(searched[0]!==undefined?searched:type!=="shope"?singleP:item).map((item)=>(
-             <MDBCard key={item.id} style={{marginLeft:"50px",marginTop:"30px",width:'200px',height:'450px'}}>
+             <MDBCard key={item.id} style={{marginLeft:"50px",marginTop:"30px",width:'200px',height:'360px'}}>
       <MDBCardImage src={item.productImage} position='top' alt='...' />
       <MDBCardBody>
         <MDBCardTitle>{item.title}</MDBCardTitle>
-        <MDBBtn onClick={() => nav(`/product/${item._id}`)} >Show</MDBBtn>
+       
         <MDBCardText>
 
        Price:-  {item.price}
@@ -64,7 +64,9 @@ const Shope = () => {
         <MDBCardText>
         Description:- {item.description}
         </MDBCardText>
+        <MDBBtn onClick={() => nav(`/product/${item._id}`)}>Show</MDBBtn>
       </MDBCardBody>
+      
     </MDBCard>
         ))}
       

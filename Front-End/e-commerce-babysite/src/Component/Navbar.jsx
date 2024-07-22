@@ -103,28 +103,29 @@ const Navbar = () => {
                   </MDBDropdown>
                 </MDBNavbarItem>
               </MDBNavbarNav>
-              <MDBInputGroup tag="form" className="d-flex w-auto mb-3">
+              <MDBInputGroup tag="form" className="d-flex w-60 mb-1"  style={{ marginRight : '70px' }}>
                 <input
                   className="form-control"
-                  placeholder="Type query"
+                  placeholder="Search type"
                   aria-label="Search"
                   type="Search"
                 />
                 <FontAwesomeIcon
                   icon={faShoppingCart}
                   onClick={() => nav("/addtocart")}
-                  style={{ marginLeft: "10px", padding: "10px" }}
+                  style={{ marginLeft: "65px", marginTop: "15px"}}
                 />
               </MDBInputGroup>
 
-              <MDBInputGroup tag="form" className="d-flex w-auto mb-3">
+              <MDBInputGroup tag="form" className="d-flex w-auto mt-2 ">
               <MDBDropdown>
                 <MDBDropdownToggle tag='a' className='nav-link text-white' role='button'  >
                 <MDBIcon fas icon="ellipsis-v" className='text-black'/>
                 </MDBDropdownToggle>
-                <MDBDropdownMenu>
+                <MDBDropdownMenu >
                   <MDBDropdownItem link >Profile</MDBDropdownItem>
                   <MDBDropdownItem link  onClick={()=>logout()}>Logout</MDBDropdownItem>
+                  <MDBDropdownItem link  onClick={()=>nav('/login')}>Login</MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
               </MDBInputGroup>

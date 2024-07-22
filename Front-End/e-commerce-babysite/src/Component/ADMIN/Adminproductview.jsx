@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminProductView = () => {
   const [gridModal, setGridModal] = useState(false);
+  const [update, setupdate] = useState(false);
   const [title, setTitle] = useState('');
   const [image, setImage] = useState(null);
   const [category, setCategory] = useState('');
@@ -34,6 +35,11 @@ const AdminProductView = () => {
   const [currentPage, setCurrentPage] = useState(1); // Current page of products
   const [perPage] = useState(5); // Products per page
   const [totalPages, setTotalPages] = useState(0); // Total number of pages
+
+
+  const toggleOpen = () => setGridModal(!gridModal);
+
+
 
   const adminToken = localStorage.getItem('adminToken');
 
@@ -69,7 +75,7 @@ const AdminProductView = () => {
     productView();
   }, [currentPage]); // Trigger on currentPage change
 
-  const toggleOpen = () => setGridModal(!gridModal);
+  
 
   const addHandle = async (e) => {
     e.preventDefault();
@@ -101,6 +107,17 @@ const AdminProductView = () => {
     setGridModal(false);
   };
 
+
+   
+  // const editHandle = (e,id)=>{
+  //   e.preventDefault()
+  //   console.log(id,'ertyu');
+  //     // axios.patch(`http://localhost:3033/api/admin/updateproduct/${id}`,{title,category,image,description,price},adminConfig)
+  //   // .then(res=> toast.success("Edit Successfully"))
+  // }
+
+
+
   const handlePagination = (action) => {
     if (action === 'prev') {
       setCurrentPage((prevPage) => prevPage - 1);
@@ -108,18 +125,14 @@ const AdminProductView = () => {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
+                
+           
+  
 
+                    
+         
+    
    
-  //  const updateProduct = async()=>{
-  //    try {
-  //         const response = await axios.patch('http://localhost:3033/api/admin/updateproduct/${id}')
-  //         if(response.status === 200){
-  //           toast.success(response.data.message)
-  //         }
-  //    } catch (error) {
-  //     console.log(error.response.data.message);
-  //    }
-  //  }
 
   return (
     <>
@@ -128,7 +141,6 @@ const AdminProductView = () => {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
   <MDBBtn color='tertiary' size='lg' className='mx-5 fixed' onClick={toggleOpen}>
     <MDBIcon far icon='plus-square' style={{ marginRight: '10px' }} /> Add Product
-    <MDBIcon far icon='plus-square' style={{ marginLeft: '10px' }} /> updateProduct
   </MDBBtn>
 
       {loading ? (
@@ -143,15 +155,18 @@ const AdminProductView = () => {
                 </MDBCol>
                 <MDBCol xs='12' md='8'>
                   <MDBCardBody>
+
                     <MDBCardTitle>Name: {value?.title}</MDBCardTitle>
                     <MDBCardText>Price: {value?.price}</MDBCardText>
                     <MDBCardText>Category: {value?.category}</MDBCardText>
                     <MDBCardText>Description: {value?.description}</MDBCardText>
+                    
+    
                     <MDBBtn
           color='primary'
           size='sm'
           className='mx-1'
-          onClick={()=>nav('/adminproUpdate')}
+           onClick={()=>nav('/adminproUpdate')}
         >
         Update Product
         </MDBBtn>
@@ -241,6 +256,13 @@ const AdminProductView = () => {
           </MDBModalContent>
         </MDBModalDialog>
       </MDBModal>
+
+
+
+
+    
+
+
     </div>
     </>
   );
