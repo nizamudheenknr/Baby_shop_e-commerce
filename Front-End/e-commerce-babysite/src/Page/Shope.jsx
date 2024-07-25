@@ -49,7 +49,7 @@ const Shope = () => {
     <div style={{backgroundColor:'#FDFAFE',display:"flex",flexWrap:"wrap"}}>
      
         {(searched[0]!==undefined?searched:type!=="shope"?singleP:item).map((item)=>(
-             <MDBCard key={item.id} style={{marginLeft:"50px",marginTop:"30px",width:'200px',height:'360px'}}>
+             <MDBCard key={item.id} style={{marginLeft:"50px",marginTop:"30px",width:'200px',height:'420px'}}>
       <MDBCardImage src={item.productImage} position='top' alt='...' />
       <MDBCardBody>
         <MDBCardTitle>{item.title}</MDBCardTitle>

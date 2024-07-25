@@ -116,7 +116,7 @@ const Singleitem = () => {
           </MDBCardText>
           <MDBCardText>{data?.description}</MDBCardText>
 
-          <MDBBtn style={{ marginLeft: "5px" }}>Buy now</MDBBtn>
+          {/* <MDBBtn style={{ marginLeft: "5px" }}>Buy now</MDBBtn> */}
           <MDBBtn style={{ marginLeft: "30px" }} onClick={addtoCart}>
             Add Cart
           </MDBBtn>

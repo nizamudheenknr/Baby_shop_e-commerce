@@ -1,0 +1,60 @@
+/* Full viewport height container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background: #f0f4f8; /* Light background color */
+}
+
+/* Styling the profile card */
+.profile-card {
+    padding: 30px;
+    width: 1000px; /* Set the card width */
+    height: 600px; /* Set the card height */
+    background: #ffffff; /* Card background color */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+    border: 1px solid #e0e0e0; /* Light border for definition */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Profile header styling */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0; /* Border under header */
+    padding-bottom: 15px;
+}
+
+.profile-pic {
+    width: 100px; /* Adjust profile picture size */
+    height: 100px;
+    border-radius: 50%; /* Make the profile picture round */
+    object-fit: cover; /* Ensure image covers the area */
+    margin-right: 20px; /* Spacing between image and text */
+    border: 2px solid #e0e0e0; /* Light border around the image */
+}
+
+.card-title {
+    font-size: 28px; /* Increase title font size */
+    font-weight: 600;
+    color: #333;
+}
+
+/* Profile info section */
+.profile-info {
+    margin-top: 20px;
+}
+
+.info-item {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+}
+
+.info-item strong {
+    color: #555; /* Darker color for labels */
+}

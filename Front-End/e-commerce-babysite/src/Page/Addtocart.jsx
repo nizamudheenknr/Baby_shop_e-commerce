@@ -7,22 +7,24 @@ import {
   MDBCardImage,
   MDBRow,
   MDBCol,
+  MDBBtn,
 } from "mdb-react-ui-kit";
 // import { shopItem } from '../Component/Mainshop';
 import axios from "axios";
 import Navbar from "../Component/Navbar";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 // import { useParams } from 'react-router-dom';
 const Addtocart = () => {
-  // const navigate = useNavigate();
+  const nav = useNavigate();
 
   const [item, setItem] = useState([]);
   // const {userId} = useParams()
   const [abc, setabc] = useState(false);
   const [remove, setRemove] = useState(false);
   let userId = localStorage.getItem("userId");
-  var ItemQuantity 
+  var ItemQuantity;
 
   const token = localStorage.getItem("usertoken");
   const userConfig = {
@@ -103,15 +105,130 @@ const Addtocart = () => {
     borderRadius: "3px",
     cursor: "pointer",
   };
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
+  const handlepayment = async () => {
+    const scriptLoaded = await loadRazorpayScript();
+
+    if (!scriptLoaded) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+    const orderList = await axios.post(
+      `http://localhost:3033/api/userproduct/${userId}/payment`,
+      {
+        amount: item.reduce(
+          (acc, item) => acc + item.productId.price * item.quantity,
+          0
+        ),
+      },
+      userConfig
+    );
+    console.log("payment", orderList.data.data);
+
+    const { amount, id: order_id, currency } = orderList.data.data;
+
+    var options = {
+      key: "rzp_test_8AFz4QlvG0Diby", // Enter the Key ID generated from the Dashboard
+      amount: amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: currency,
+      name: "Acme Corp",
+      description: "Test Transaction",
+      image: "https://example.com/your_logo",
+      order_id: order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: async function (response) {
+        const paymentData = {
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+          razorpay_payment_id: response.razorpay_payment_id,
+        };
+
+        console.log(paymentData);
+
+        const verificationResult = await axios.post(
+          `http://localhost:3033/api/userproduct/:verifypayment`,
+          paymentData,
+          userConfig
+        );
+
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature)
+
+        // Send the details to the server for verification and order completion
+
+        // fetch('/your-verification-endpoint',{
+        //     method:'POST',
+        //     headers:{
+        //         'Content-Type':'application/json'
+        //     },
+        //     body:JSON.stringify({
+        //         razorpay_payment_id:response.razorpay_payment_id,
+        //         razorpay_order_id:response.razorpay_order_id,
+        //         razorpay_signature:response.razorpay_signature,
+        //         userid:'userId'
+        //     })
+        // }).then(res => res.json())
+        // .then(data => console.log(data))
+        // .catch(error => console.log(error))
+      },
+
+      prefill: {
+        name: "nizam",
+        email: "nizam@gmail.com",
+        contact: "9048160716",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    var rzp1 = new window.Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+      alert(response.error.code);
+      alert(response.error.description);
+      alert(response.error.source);
+      alert(response.error.step);
+      alert(response.error.reason);
+      alert(response.error.metadata.order_id);
+      alert(response.error.metadata.payment_id);
+    });
+
+    rzp1.open();
+  };
   return (
     <>
       <Navbar />
 
-      <div style={{ marginTop: "70px", display: "flex", flexWrap: "wrap" }}>
-        {" "}
+      <div
+        style={{
+          marginTop: "70px",
+          display: "flex",
+          flexWrap: "wrap",
+          width: "100%",
+          height: "100vh",
+          justifyContent: "space-evenly",
+        }}
+      >
+    
         {item?.map((x, index) => (
           <>
-            <MDBCard key={index} style={{ maxWidth: "540px" }}>
+            <MDBCard key={index} style={{ maxWidth: "500px", height: "300px" }}>
               <MDBRow className="g-0">
                 <MDBCol md="4">
                   <MDBCardImage
@@ -147,11 +264,17 @@ const Addtocart = () => {
                       </p>
 
                       <button
-                        onClick={() => handleRemove(x?.productId._id)}
+                        onClick={() => handleRemove(handleRemove?x.productId._id:()=>nav('/:type'))}
                         style={buttonStyle}
                       >
                         REMOVE
                       </button>
+                      <MDBBtn
+                        style={{ marginLeft: "5px" }}
+                        onClick={handlepayment}
+                      >
+                        Buy now
+                      </MDBBtn>
                     </MDBCardText>
                   </MDBCardBody>
                 </MDBCol>

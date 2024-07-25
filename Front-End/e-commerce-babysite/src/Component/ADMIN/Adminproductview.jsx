@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import {
   MDBCard,
   MDBCardTitle,
@@ -32,10 +32,11 @@ const AdminProductView = () => {
   const [description, setDescription] = useState('');
   const [view, setView] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); // Current page of products
-  const [perPage] = useState(5); // Products per page
-  const [totalPages, setTotalPages] = useState(0); // Total number of pages
 
+  const [currentPage, setCurrentPage] = useState(1); 
+
+  const [perPage] = useState(5); 
+  const [totalPages, setTotalPages] = useState(0); 
 
   const toggleOpen = () => setGridModal(!gridModal);
 
@@ -73,7 +74,7 @@ const AdminProductView = () => {
     };
 
     productView();
-  }, [currentPage]); // Trigger on currentPage change
+  }, [currentPage]); 
 
   
 
@@ -118,14 +119,22 @@ const AdminProductView = () => {
 
 
 
-  const handlePagination = (action) => {
+  const handlePage = (action) => {
     if (action === 'prev') {
       setCurrentPage((prevPage) => prevPage - 1);
     } else if (action === 'next') {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
-                
+        
+  
+  const Handledelete = (id)=>{
+    axios.delete(`http://localhost:3033/api/admin//deleteproduct/${id}`,adminConfig).then(()=>{
+      toast.success("product deleted succussfully")
+      const data=  view.filter((val)=>val._id !== id)
+      setView(data)
+    })
+  }
            
   
 
@@ -166,9 +175,17 @@ const AdminProductView = () => {
           color='primary'
           size='sm'
           className='mx-1'
-           onClick={()=>nav('/adminproUpdate')}
+           onClick={()=>nav(`/adminproUpdate?name=${value?.title}&price=${value?.price}&category=${value?.category}&description=${value?.description}&image=${value?.productImage}&id=${value?._id}`)}
         >
         Update Product
+        </MDBBtn>
+        <MDBBtn
+          color='primary'
+          size='sm'
+          className='mx-1'
+         onClick={()=>Handledelete(value._id)}
+        >
+        delete
         </MDBBtn>
                     {/* <MDBBtn color='primary' onClick={()=>nav('/') }>Show</MDBBtn> */}
                   </MDBCardBody>
@@ -176,7 +193,7 @@ const AdminProductView = () => {
               </MDBRow>
             </MDBCard>
           </div>
-        )).slice((currentPage - 1) * perPage, currentPage * perPage) // Slice to show only the current page's products
+        )).slice((currentPage - 1) * perPage, currentPage * perPage) 
       )}
 
       {/* Pagination Controls */}
@@ -185,8 +202,9 @@ const AdminProductView = () => {
           color='primary'
           size='sm'
           className='mx-1'
-          onClick={() => handlePagination('prev')}
+          onClick={() => handlePage('prev')}
           disabled={currentPage === 1}
+          
         >
           Previous
         </MDBBtn>
@@ -194,7 +212,7 @@ const AdminProductView = () => {
           color='primary'
           size='sm'
           className='mx-1'
-          onClick={() => handlePagination('next')}
+          onClick={() => handlePage('next')}
           disabled={currentPage === totalPages}
         >
           Next

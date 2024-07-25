@@ -1,6 +1,6 @@
 import express from 'express'
 import { productCategory, viewAllProduct, viewSpecificProduct } from '../CONTROLLER/userProductController.js'
-import { addCart, decrementItemQuantity, incrementItemQuantity,removecart,viewcart } from '../CONTROLLER/cartController.js'
+import { addCart, decrementItemQuantity, incrementItemQuantity,removecart,userOrderList,viewcart } from '../CONTROLLER/cartController.js'
 import { addwishList, removeWishlist, viewWishList } from '../CONTROLLER/wishlistContrller.js'
 import { payment, verifyPayment } from '../CONTROLLER/userPaymentController.js'
 import {usertoken}from '../Middleware/userJwttoken.js'
@@ -21,6 +21,7 @@ route.get('/cart/:userid',viewcart)
 route.delete('/:userid/cart/:productid/remove',removecart)
 route.post('/:userid/cart/:productid/increment',incrementItemQuantity);
 route.post('/:userid/cart/:productid/decrement',decrementItemQuantity)
+route.get('/userorders/:userId',userOrderList)
 
 // wishlist routes
 

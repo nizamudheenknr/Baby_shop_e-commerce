@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { MDBBtn, MDBTable, MDBTableBody, MDBTableHead } from 'mdb-react-ui-kit';
-import React, { useEffect, useState } from 'react'
+import{ useEffect, useState } from 'react'
 import Admin from './Admin';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 
@@ -11,7 +11,7 @@ const AdminUserview = () => {
     const [user,setUser]=useState([]);
     const [render , setRender] = useState(false)
 
-    const nav = useNavigate()
+    // const nav = useNavigate()
 
     const adminToken = localStorage.getItem("adminToken")
     console.log(adminToken);
@@ -41,14 +41,14 @@ const AdminUserview = () => {
       
         } catch (error) {
           console.error(error.response.data.message);
-        }
+        } 
       }
 
-      const logout = ()=>{
-        localStorage.clear()
-        toast.success('Logged out successfully');
-        nav('/')
-      }
+      // const logout = ()=>{
+      //   localStorage.clear()
+      //   toast.success('Logged out successfully');
+      //   nav('/')
+      // }
     const adminConfig={
       headers:{
           'Content-Type':"application/json",
@@ -68,11 +68,6 @@ const AdminUserview = () => {
     },[render])
 
 
-     
-
-    
- 
-  
   return (
     <div >
         <Admin/>
@@ -94,6 +89,7 @@ const AdminUserview = () => {
           <th scope='row'>{index+1}</th>
           <td>{item.email}</td>
           <td>{item.username}</td>
+          <td></td>
           <td>
             {/* {item.isDeleted? <MDBBtn color='link' size='sm'>
               <i className='fas fa-times'></i> */}
@@ -108,7 +104,7 @@ const AdminUserview = () => {
           </>
         ))}
         
-       <button onClick={logout}>logout</button>
+  
      
        
       </MDBTableBody>

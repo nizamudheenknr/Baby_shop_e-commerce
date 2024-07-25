@@ -8,8 +8,8 @@ import Navbar from '../Component/Navbar';
 
 const Home = () => {
    const nav=useNavigate()
-const { use } =useContext(shopItem)
-console.log(use)
+// const { use } =useContext(shopItem)
+// console.log(use)
   return (
     <div style={{marginTop:'-13px'}}>
       <Navbar/>

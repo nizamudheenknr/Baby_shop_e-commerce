@@ -106,6 +106,7 @@ export const productupdate = async(req,res,next)=>{
       return res.status(404).json({message:"Product not found"})
     }
     const {title,description,price,category}=req.body
+    console.log(title);
 
     if(title){
       product.title=title

@@ -15,6 +15,9 @@ import Register from '../Page/Register';
 import AdminUserview from './ADMIN/AdminUserview';
 import Adminproductview from './ADMIN/Adminproductview';
 import ProductUpdate from './ADMIN/ProductUpdate';
+import UserOrder from '../Page/UserOrder';
+import AdminOrder from './ADMIN/AdminOrder';
+import UserProfile from '../Page/UserProfile';
 // import axios from 'axios';
 
 
@@ -58,6 +61,10 @@ const Mainshop = () => {
        <Route path='/adminalluser' element={<AdminUserview/>}/>
        <Route path='/adminallproduct' element={<Adminproductview/>}/>
        <Route path='/adminproUpdate' element={<ProductUpdate/>}/>
+       <Route path='/userOrder' element={<UserOrder/>}/>
+       <Route path='/adminorder' element={<AdminOrder/>}/>
+       <Route path='/userprofile' element={<UserProfile/>}/>
+
        {/* <Route path="/admin" element={adminToken ? <Admin /> : nav('/')} /> */}
       
        </Routes>      

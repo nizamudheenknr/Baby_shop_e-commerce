@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import cart from "../MODELS/cartSchema.js"
 import Product from "../MODELS/productSchema.js";
 import User from "../MODELS/userSchema.js";
@@ -156,4 +157,32 @@ export const decrementItemQuantity = async(req,res,next)=>{
     }catch(error){
         return next(error)
     }
+}
+
+export const userOrderList = async (req,res)=>{
+          try {
+             const {userId} = req.params;
+
+
+
+             const user = await User.findById(userId).populate({
+                path: 'Order',
+                populate: {
+                  path: 'products.productId',
+                  model: 'Product',
+                },
+              });
+          
+              if (!user) {
+                return res.status(404).json({ message: "User not found" });
+              }
+
+             console.log("orderlist",user)
+           return  res.json(user)
+
+
+          } catch (error) {
+            console.error(error);
+            res.status(404).json({message:"order details not found"})
+          }
 }

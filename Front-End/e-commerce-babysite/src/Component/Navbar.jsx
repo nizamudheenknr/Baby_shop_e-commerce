@@ -23,6 +23,8 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { shopItem } from "./Mainshop";
 import toast from "react-hot-toast";
 
+
+
 const Navbar = () => {
   const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
   const nav = useNavigate();
@@ -86,7 +88,7 @@ const Navbar = () => {
                       </MDBDropdownItem>
                       <MDBDropdownItem
                         link
-                        onClick={() => nav("/baby stroller")}
+                        onClick={() => nav("/baby stroller")} 
                       >
                         BABY STROLLER
                       </MDBDropdownItem>
@@ -113,8 +115,10 @@ const Navbar = () => {
                 <FontAwesomeIcon
                   icon={faShoppingCart}
                   onClick={() => nav("/addtocart")}
+
                   style={{ marginLeft: "65px", marginTop: "15px"}}
                 />
+             
               </MDBInputGroup>
 
               <MDBInputGroup tag="form" className="d-flex w-auto mt-2 ">
@@ -123,9 +127,10 @@ const Navbar = () => {
                 <MDBIcon fas icon="ellipsis-v" className='text-black'/>
                 </MDBDropdownToggle>
                 <MDBDropdownMenu >
-                  <MDBDropdownItem link >Profile</MDBDropdownItem>
+                  <MDBDropdownItem link onClick={()=>nav('/userprofile')} >User Profile</MDBDropdownItem>
                   <MDBDropdownItem link  onClick={()=>logout()}>Logout</MDBDropdownItem>
-                  <MDBDropdownItem link  onClick={()=>nav('/login')}>Login</MDBDropdownItem>
+                  {/* <MDBDropdownItem link  onClick={()=>nav('/login')}>Login</MDBDropdownItem> */}
+                  <MDBDropdownItem link  onClick={()=>nav("/userOrder")}>Order</MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
               </MDBInputGroup>

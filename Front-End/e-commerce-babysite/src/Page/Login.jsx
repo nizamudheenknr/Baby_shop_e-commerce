@@ -68,6 +68,7 @@ const userConfig={
           localStorage.setItem("userId",userData._id);
          localStorage.setItem("user.name",response.data.data.username)
          localStorage.setItem("usertoken",token)
+         localStorage.setItem("user.email",response.data.data.email)
         }
          toast.success(response.data.message)
          setTimeout(()=>{
